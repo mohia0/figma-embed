@@ -349,33 +349,27 @@
 
             // Create the enhanced template
             const template = `<div id="embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid rgba(0, 0, 0, 0.1);">
-    <!-- Loading Screen with Pulsing Animation -->
-    <div id="loading-screen" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #000000; opacity: 1; transition: opacity 0.5s ease-in-out;">
+    <!-- Loading Screen -->
+    <div id="loading-screen" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #000; opacity: 1; transition: opacity 0.6s ease-in-out;">
         <img src="https://cdn.prod.website-files.com/6316444de735b0ec0b238fe7/632ba406c442d274729ba222_Asset%202.svg" 
              alt="Loading..." 
-             style="width: 80px; height: 80px; animation: pulse 1.5s ease-in-out infinite;">
+             style="width: 80px; height: 80px; margin-bottom: 20px; animation: pulse 1.5s ease-in-out infinite;">
+        
+        <!-- Progress Bar Container -->
+        <div style="width: 120px; height: 4px; background: #222; border-radius: 4px; overflow: hidden;">
+            <div id="progress-bar" style="width: 0%; height: 100%; background: #fff; transition: width 0.2s linear;"></div>
+        </div>
     </div>
+
     <!-- Figma Embed -->
     <iframe
+        id="figmaFrame"
         src="${figmaUrl.toString()}"
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; transition: opacity 0.5s ease-in-out;"
-        allowfullscreen
-        onload="(function() {
-            const iframe = this;
-            const loadingScreen = document.getElementById('loading-screen');
-            // Wait for 3 seconds after iframe loads
-            setTimeout(function() {
-                iframe.style.opacity = '1';
-                // Fade out loading screen
-                loadingScreen.style.opacity = '0';
-                // Remove loading screen after fade
-                setTimeout(function() {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            }, 3000);
-        }).call(this);"
-    ></iframe>
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; transition: opacity 0.6s ease-in-out;"
+        allowfullscreen>
+    </iframe>
 </div>
+
 <style>
     /* Pulse animation for loading SVG */
     @keyframes pulse {
@@ -400,7 +394,74 @@
             margin-top: 20px; /* Adds space above the embed on mobile screens */
         }
     }
-</style>`;
+</style>
+
+<script>
+const iframe = document.getElementById("figmaFrame");
+const loadingScreen = document.getElementById("loading-screen");
+const progressBar = document.getElementById("progress-bar");
+
+let fakeProgress = 0;
+let loading = true;
+let figmaPageLoaded = false;
+let iframeLoaded = false;
+
+// Function to check if both conditions are met
+function checkIfReady() {
+    if (figmaPageLoaded && iframeLoaded && loading) {
+        loading = false;
+        
+        // Fill progress to 100%
+        progressBar.style.width = "100%";
+        
+        // Wait additional 2 seconds to ensure Figma is fully loaded
+        setTimeout(() => {
+            iframe.style.opacity = "1";
+            loadingScreen.style.opacity = "0";
+            setTimeout(() => loadingScreen.style.display = "none", 600);
+        }, 2000);
+    }
+}
+
+// Fake progress until real load arrives
+const progressInterval = setInterval(() => {
+    if (!loading) {
+        clearInterval(progressInterval);
+        return;
+    }
+    if (fakeProgress < 90) {
+        fakeProgress += 2;
+        progressBar.style.width = fakeProgress + "%";
+    }
+}, 120);
+
+// Listen for iframe load event
+iframe.onload = function() {
+    iframeLoaded = true;
+    checkIfReady();
+};
+
+// Listen for Figma Ready Event
+window.addEventListener("message", (event) => {
+    if (event.data?.type === "embed:page:load") {
+        figmaPageLoaded = true;
+        checkIfReady();
+    }
+});
+
+// Absolute fallback (if Figma fails or events don't fire)
+setTimeout(() => {
+    if (loading) {
+        loading = false;
+        progressBar.style.width = "100%";
+        setTimeout(() => {
+            iframe.style.opacity = "1";
+            loadingScreen.style.opacity = "0";
+            setTimeout(() => loadingScreen.style.display = "none", 600);
+        }, 500);
+    }
+}, 15000);
+<\/script>`;
 
             // Show the output
             document.getElementById('output-code').value = template;
