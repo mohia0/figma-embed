@@ -14,10 +14,9 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #000;
-            height: 100vh;
-            padding: 1rem;
+            min-height: 100vh;
+            padding: 2rem;
             color: #333;
-            overflow: hidden;
         }
 
         .container {
@@ -28,9 +27,6 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             overflow: hidden;
             animation: slideIn 0.5s ease-out;
-            height: calc(100vh - 2rem);
-            display: flex;
-            flex-direction: column;
         }
 
         @keyframes slideIn {
@@ -45,25 +41,19 @@
         }
 
         .content {
-            padding: 1rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
+            padding: 2rem;
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 800;
             color: #000;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
             text-align: center;
-            flex-shrink: 0;
         }
 
         .form-group {
-            margin-bottom: 0.75rem;
-            flex-shrink: 0;
+            margin-bottom: 1.5rem;
         }
 
         label {
@@ -76,11 +66,11 @@
 
         textarea {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border: 1px solid #d1d5db;
             border-radius: 6px;
-            font-size: 0.75rem;
-            resize: none;
+            font-size: 0.875rem;
+            resize: vertical;
             transition: all 0.2s;
         }
 
@@ -94,14 +84,13 @@
             width: 100%;
             background: #000;
             color: white;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 6px;
             font-weight: 500;
-            font-size: 0.875rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            flex-shrink: 0;
         }
 
         .btn:hover {
@@ -114,12 +103,8 @@
         }
 
         .output-section {
-            margin-top: 0.75rem;
+            margin-top: 2rem;
             animation: fadeIn 0.5s ease-out;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
         }
 
         @keyframes fadeIn {
@@ -137,12 +122,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.5rem;
-            flex-shrink: 0;
+            margin-bottom: 1rem;
         }
 
         .output-title {
-            font-size: 1rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #000;
         }
@@ -153,10 +137,10 @@
             gap: 0.5rem;
             background: #000;
             color: white;
-            padding: 0.375rem 0.75rem;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -172,32 +156,25 @@
 
         .output-textarea {
             width: 100%;
-            flex: 1;
-            min-height: 0;
+            height: 24rem;
             background: #f3f4f6;
-            padding: 0.75rem;
+            padding: 1rem;
             border: 1px solid #d1d5db;
             border-radius: 6px;
             font-family: 'Courier New', monospace;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #000;
             resize: none;
-            overflow-y: auto;
         }
 
         .preview-section {
-            margin-top: 0.75rem;
+            margin-top: 2rem;
             animation: fadeIn 0.5s ease-out;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
         }
 
         .preview-container {
             width: 100%;
-            flex: 1;
-            min-height: 0;
+            height: 38rem;
             border: 1px solid #d1d5db;
             border-radius: 6px;
             overflow: hidden;
@@ -206,7 +183,7 @@
             align-items: center;
             justify-content: center;
             color: #6b7280;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
         }
 
         .preview-iframe {
@@ -229,27 +206,21 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 0.5rem;
-            }
-            
             .container {
-                margin: 0;
-                height: calc(100vh - 1rem);
+                margin: 1rem;
             }
             
             .content {
-                padding: 0.75rem 1rem;
+                padding: 1.5rem;
             }
             
             h1 {
-                font-size: 1.25rem;
-                margin-bottom: 0.5rem;
+                font-size: 1.5rem;
             }
             
             .output-header {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 1rem;
                 align-items: stretch;
             }
         }
@@ -264,8 +235,8 @@
                 <label for="input-code">Enter Figma URL or iFrame Embed Code:</label>
                 <textarea 
                     id="input-code" 
-                    rows="2" 
-                    placeholder="Paste Figma URL or iframe code here..."
+                    rows="4" 
+                    placeholder="Paste Figma URL or iframe code here...&#10;&#10;Example URL: https://www.figma.com/proto/...&#10;Example iframe: &lt;iframe src='...'&gt;&lt;/iframe&gt;"
                 ></textarea>
             </div>
 
